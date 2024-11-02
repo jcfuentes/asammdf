@@ -7,8 +7,6 @@ from __future__ import annotations
 from functools import lru_cache
 
 from ..types import SourceType
-from . import v2_v3_blocks as v3b
-from . import v2_v3_constants as v3c
 from . import v4_blocks as v4b
 from . import v4_constants as v4c
 
@@ -61,25 +59,7 @@ class Source:
     @classmethod
     @lru_cache(128)
     def from_source(cls, source: SourceType) -> Source:
-        if isinstance(source, v3b.ChannelExtension):
-            if source.type == v3c.SOURCE_ECU:
-                return cls(
-                    source.name,
-                    source.path,
-                    source.comment,
-                    cls.SOURCE_OTHER,  # source type other
-                    cls.BUS_TYPE_NONE,  # bus type none
-                )
-            else:
-                return cls(
-                    source.name,
-                    source.path,
-                    source.comment,
-                    cls.SOURCE_BUS,  # source type bus
-                    cls.BUS_TYPE_CAN,  # bus type CAN
-                )
-
-        elif isinstance(source, v4b.SourceInformation):
+        if isinstance(source, v4b.SourceInformation):
             return cls(
                 source.name,
                 source.path,
